@@ -1,5 +1,7 @@
 # 10MBy
 
+[![Download](https://img.shields.io/badge/Download-v1.0-2ea44f?style=for-the-badge)](https://github.com/warmpop/10MBy/releases/download/release/10MBy-1.0-setup.exe)
+
 Compress video and audio files to fit under 10 MB — right from the Windows context menu.
 
 ## Install
