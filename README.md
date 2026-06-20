@@ -1,37 +1,55 @@
 # 10MBy
 
-Easily compress videos and audio to fit under just 10MB from the context menu in Windows.
-
-> ⚠️ This project is currently in alpha. Please report any issues.
+Compress video and audio files to fit under 10 MB — right from the Windows context menu.
 
 ## Install
-Download the latest setup file from [releases](https://github.com/bluevacation/10MBy/releases).
-1. Install ffmpeg if you don't have it already:
-```bash
-winget install --id=Gyan.FFmpeg -e
-winget install --id=Gyan.FFmpeg.Essentials -e
-```
-2. Run `10MBy_Setup.exe`
 
-Alternatively, you can build it from source:
-```bash
-pip install pyinstaller pillow tkinterdnd2
-pyinstaller --onefile --windowed --icon=10mby.ico 10mbizer.py
-```
-Executable will be in: `dist/10MBy.exe`
+1. Download the latest release from [Releases](https://github.com/warmpop/10MBy/releases)
+2. Place `setup.exe`, `10MBy.exe`, `10mby.png`, and `10mby.ico` in the same folder
+3. Run `setup.exe` and click **Install**
+
+Setup will:
+- Copy files to `%LOCALAPPDATA%\Programs\10MBy\`
+- Create a Start Menu shortcut
+- Add "Compress to 10 MB" to the right-click menu for supported files
+- Install FFmpeg automatically if not already present
+
+## Uninstall
+
+- **From the app**: Click the &#x2699; gear icon → **Uninstall 10MBy**
+- **From setup.exe**: Run it again — detects existing install and offers Uninstall
 
 ## Usage
 
-- **Quick compress**: Right-click any video/audio file → "Compress to 10 MB"
-- The compressed file will be automatically copied to your clipboard. The compressed file will be in the same directory as the original file.
+- Right-click any video or audio file → **Compress to 10 MB**
+- Or open 10MBy and drag a file in / click **Open File**
+- The compressed file is saved next to the original and copied to your clipboard
 
 ## Supported Formats
 
-Video: MP4, MKV, AVI, MOV, WEBM, WMV, FLV, M4V  
-Audio: MP3, WAV, FLAC, AAC, OGG, M4A, WMA
+**Video**: MP4, MKV, AVI, MOV, WEBM, WMV, FLV, M4V  
+**Audio**: MP3, WAV, FLAC, AAC, OGG, M4A, WMA
 
-## Requirements
+## How It Works
 
-- Windows 10/11
-- [FFmpeg]([https://ffmpeg.org/](https://winstall.app/apps/Gyan.FFmpeg)) in PATH (app warns if not found)
+10MBy uses **FFmpeg** under the hood. It probes the file duration, calculates the exact bitrate needed to fit under 10 MB, and applies the gentlest compression possible. If the estimate is slightly off, it steps down one more level — no brute-force retries, no wasted time.
 
+## Build from Source
+
+Requirements:
+- [Rust](https://rustup.rs)
+- [FFmpeg](https://ffmpeg.org) in PATH (or let setup.exe install it via winget)
+
+```bash
+git clone https://github.com/warmpop/10MBy.git
+cd 10MBy
+cargo build --release
+```
+
+Outputs in `target/release/`:
+- `10MBy.exe` — main app
+- `setup.exe` — installer / uninstaller
+
+## License
+
+MIT

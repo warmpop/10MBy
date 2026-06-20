@@ -1,0 +1,38 @@
+[package]
+name = "tenmby"
+version = "0.2.0"
+edition = "2021"
+description = "Compress video and audio files to fit under 10MB from the Windows context menu"
+
+[[bin]]
+name = "10MBy"
+path = "src/main.rs"
+
+[[bin]]
+name = "setup"
+path = "src/setup.rs"
+
+[dependencies]
+eframe = "0.28"
+egui = "0.28"
+clap = { version = "4", features = ["derive"] }
+winreg = "0.52"
+rfd = "0.14"
+png = "0.17"
+
+[build-dependencies]
+winres = "0.1"
+
+[target.'cfg(windows)'.dependencies]
+windows = { version = "0.56", features = [
+    "Win32_System_Com",
+    "Win32_UI_Shell",
+    "Win32_Foundation",
+    "Win32_System_Ole",
+] }
+
+[profile.release]
+opt-level = "z"
+lto = true
+strip = true
+codegen-units = 1
