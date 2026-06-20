@@ -7,8 +7,7 @@ Compress video and audio files to fit under 10 MB — right from the Windows con
 ## Install
 
 1. Download the latest release from [Releases](https://github.com/warmpop/10MBy/releases)
-2. Place `setup.exe`, `10MBy.exe`, `10mby.png`, and `10mby.ico` in the same folder
-3. Run `setup.exe` and click **Install**
+2. Run `setup.exe` and click **Install**
 
 Setup will:
 - Copy files to `%LOCALAPPDATA%\Programs\10MBy\`
