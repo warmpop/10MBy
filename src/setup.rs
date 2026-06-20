@@ -18,13 +18,6 @@ fn is_installed() -> bool {
     main_exe_path().exists()
 }
 
-fn get_own_dir() -> PathBuf {
-    std::env::current_exe()
-        .ok()
-        .and_then(|p| p.parent().map(|d| d.to_path_buf()))
-        .unwrap_or_default()
-}
-
 fn has_ffmpeg() -> bool {
     Command::new("ffmpeg")
         .arg("-version")
@@ -88,28 +81,25 @@ fn ensure_ffmpeg(status_cb: &dyn Fn(&str)) -> Result<(), String> {
 fn do_install(status_cb: &dyn Fn(&str)) -> Result<String, String> {
     ensure_ffmpeg(status_cb)?;
 
-    let own_dir = get_own_dir();
-    let source_exe = own_dir.join("10MBy.exe");
-    let source_ico = own_dir.join("10mby.ico");
-    let source_png = own_dir.join("10mby.png");
-
-    if !source_exe.exists() {
-        return Err("10MBy.exe not found next to setup.exe. Place them in the same folder.".into());
-    }
-
-    status_cb("Copying files...");
+    status_cb("Extracting files...");
     let dest = install_dir();
     std::fs::create_dir_all(&dest).map_err(|e| format!("Cannot create install folder: {e}"))?;
 
-    std::fs::copy(&source_exe, dest.join("10MBy.exe"))
-        .map_err(|e| format!("Cannot copy exe: {e}"))?;
+    // Extract embedded main binary and assets
+    std::fs::write(
+        dest.join("10MBy.exe"),
+        include_bytes!("../target/release/10MBy.exe"),
+    )
+    .map_err(|e| format!("Cannot write exe: {e}"))?;
+    std::fs::write(dest.join("10mby.png"), include_bytes!("../10mby.png"))
+        .map_err(|e| format!("Cannot write PNG: {e}"))?;
+    std::fs::write(dest.join("10mby.ico"), include_bytes!("../10mby.ico"))
+        .map_err(|e| format!("Cannot write ICO: {e}"))?;
 
-    // Also copy setup.exe for future uninstalls
-    let source_setup = own_dir.join("setup.exe");
-    let _ = std::fs::copy(&source_setup, dest.join("setup.exe"));
-
-    let _ = std::fs::copy(&source_png, dest.join("10mby.png"));
-    let _ = std::fs::copy(&source_ico, dest.join("10mby.ico"));
+    // Also copy ourselves for future uninstalls
+    let setup_src = std::env::current_exe().map_err(|e| format!("Cannot get exe path: {e}"))?;
+    std::fs::copy(&setup_src, dest.join("setup.exe"))
+        .map_err(|e| format!("Cannot copy setup: {e}"))?;
 
     status_cb("Creating shortcut...");
     create_shortcut(&dest)?;
