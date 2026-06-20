@@ -1,15 +1,16 @@
 # 10MBy
 
 [![Download](https://img.shields.io/badge/Download-v1.0-2ea44f?style=for-the-badge)](https://github.com/warmpop/10MBy/releases/download/release/10MBy-1.0-setup.exe)
+[![Platform](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/warmpop/10MBy/releases)
 
 Compress video and audio files to fit under 10 MB — right from the Windows context menu.
 
 ## Install
 
-1. Download the latest release from [Releases](https://github.com/warmpop/10MBy/releases)
-2. Run `setup.exe` and click **Install**
+1. [Download setup.exe](https://github.com/warmpop/10MBy/releases/download/release/10MBy-1.0-setup.exe) from the latest release
+2. Run `setup.exe` and click **Install** — done.
 
-Setup will:
+Setup handles everything:
 - Copy files to `%LOCALAPPDATA%\Programs\10MBy\`
 - Create a Start Menu shortcut
 - Add "Compress to 10 MB" to the right-click menu for supported files
